@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_45"
+    android:gravity="center|right"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:layout_marginBottom="@dimen/dp_10">
+
+
+    <TextView
+        android:id="@+id/tv_goods_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dp_13"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:text="共1件商品" />
+
+    <TextView
+        android:layout_marginEnd="@dimen/dp_10"
+        android:id="@+id/tv_order_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dp_13"
+        android:text="价格： $145.90" />
+</LinearLayout>

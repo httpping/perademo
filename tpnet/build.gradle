@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'android-apt'
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 27
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            //this can remove no-used images in generated-apk, and it is depends on "minifyEnabled true"
+            zipAlignEnabled true
+        }
+        debug {
+            minifyEnabled false
+        }
+
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
+}
+
+
+
+dependencies {
+
+ //   compile ":tpnet"
+ //   compile fileTree(dir: 'libs', include: ['*.jar'])
+//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+    compileOnly  project(':utils-box')
+
+
+
+    compileOnly  'com.squareup.retrofit2:retrofit:2.4.0'
+    compileOnly  'com.google.code.gson:gson:2.8.5'
+    compileOnly  'io.reactivex.rxjava2:rxandroid:2.0.2'
+    compileOnly  'io.reactivex.rxjava2:rxjava:2.1.9'
+    compileOnly  'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+
+    compileOnly  'com.github.simonpercic:oklog3:2.1.0'
+
+    compileOnly "com.android.support:support-v4:${rootProject.versions.support}"
+
+ }
+
+repositories {
+    mavenCentral()
+}

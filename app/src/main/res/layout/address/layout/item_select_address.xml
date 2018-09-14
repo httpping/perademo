@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ll_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/_10sdp"-->
+        <!--android:background="@color/color_f7f7f7" />-->
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:textColor="@color/color_2d2d2d"
+            android:textSize="@dimen/_16ssp"
+            tools:text="Gkonr dfh" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/_14ssp"
+            tools:text="+93 123456789" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/_14ssp"
+            tools:text="Efhdnft, tydfhd, dfhwre Shenzhen, Bandfhern, dhwer, 1245734544 " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@color/color_f8f8f8"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/_24sdp"
+            android:paddingStart="@dimen/_16sdp">
+
+            <ImageView
+                android:id="@+id/iv_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_choose" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_shipping_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_9sdp"
+                android:textColor="@color/color_2d2d2d"
+                android:textSize="@dimen/_16ssp"
+                tools:text="Shipping Address" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/iv_edit_address"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/icon_edit"
+                android:foreground="?attr/selectableItemBackground"
+                android:scaleType="centerInside"/>
+
+            <ImageView
+                android:id="@+id/iv_delete_address"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_44sdp"
+                android:src="@mipmap/icon_delete"
+                android:foreground="?attr/selectableItemBackground"
+                android:scaleType="centerInside" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

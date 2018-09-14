@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+
+        android:id="@+id/sv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bt_save"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <com.pera.tanping.peratech.framework.widget.EditTitleView
+                android:id="@+id/ll_account_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:et_content="@string/myaccount_address_hint"
+                app:tv_title="@string/myaccount_address_hint" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_e5e5e5" />
+
+            <com.pera.tanping.peratech.framework.widget.EditTitleView
+                android:id="@+id/ll_account_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:et_content="@string/myaccount_address_name"
+                app:tv_title="@string/myaccount_address_name" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_e5e5e5" />
+
+            <com.pera.tanping.peratech.framework.widget.EditTitleView
+                android:id="@+id/ll_account_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:et_content="@string/myaccount_address_phone"
+                app:tv_title="@string/myaccount_address_phone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_e5e5e5" />
+
+            <com.pera.tanping.peratech.framework.widget.EditTitleView
+                android:id="@+id/ll_account_contory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:et_content="@string/myaccount_address_contory"
+                app:tv_title="@string/myaccount_address_contory" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_e5e5e5" />
+
+            <com.pera.tanping.peratech.framework.widget.EditTitleView
+                android:id="@+id/ll_account_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:et_content="@string/myaccount_address_area"
+                app:tv_title="@string/myaccount_address_area" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_e5e5e5" />
+
+            <com.pera.tanping.peratech.framework.widget.EditTitleView
+                android:id="@+id/ll_account_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:et_content="@string/myaccount_address_detail"
+                app:tv_title="@string/myaccount_address_detail" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <Button
+        android:id="@+id/bt_save"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/selector_btn"
+        android:gravity="center"
+        android:text="@string/text_save"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp" />
+</RelativeLayout>

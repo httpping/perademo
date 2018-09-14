@@ -1,0 +1,42 @@
+<resources>
+    <string name="dialog_ok">Ok</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_cancel">Cancel</string>
+
+    <string name="text_forgot_password">Forgot Password</string>
+    <string name="text_register_title">REGISTER</string>
+    <string name="text_register_title_uppercase_first_letter">Register</string>
+    <string name="text_submit">Submit</string>
+    <string name="text_done">Done</string>
+    <string name="text_sign_in_uppercase_first_letter">登录</string>
+    <string name="hint_email_address_txt">用户名</string>
+    <string name="text_sign_in">登录</string>
+    <string name="login_pass_hint">密码</string>
+    <string name="account_str_welcome">用户名</string>
+    <string name="account_str_my">个人中心</string>
+    <string name="text_my_order">我的订单</string>
+    <string name="txt_address_manager">地址管理</string>
+    <string name="txt_modify_password">修改密码</string>
+    <string name="account_str_myacount">我的</string>
+    <string name="myaccount_address_hint">公司地址</string>
+    <string name="myaccount_address_name">真实姓名</string>
+    <string name="myaccount_address_phone">手机号码</string>
+    <string name="myaccount_address_contory">所在国家</string>
+    <string name="myaccount_address_area">所在地区</string>
+    <string name="myaccount_address_detail">详细地址</string>
+    <string name="text_save">保存</string>
+    <string name="et_error_tip0">不能为空</string>
+    <string name="myaccount_address_people">收货人</string>
+    <string name="txt_recevie_people">新建收货人</string>
+    <string name="modify_password_old"> 旧的密码 </string>
+    <string name="modify_password_new"> 新的密码 </string>
+    <string name="modify_password_new_retry">确认密码</string>
+    <string name="home_discover">发现</string>
+    <string name="txt_signout">注销</string>
+    <string name="empty_address">空地址</string>
+    <string name="default_address">默认的</string>
+    <string name="shipping_address">地址</string>
+    <string name="delete_address">删除地址</string>
+    <string name="delete_last_address">删除最后地址</string>
+
+</resources>

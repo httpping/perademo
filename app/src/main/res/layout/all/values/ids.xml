@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="recycler_view_item_id" type="id" />
+    <item name="glide_tag_id" type="id" />
+    <item name="image_icon_id_1" type="id" />
+    <item name="image_icon_id_2" type="id" />
+    <item name="image_icon_id_3" type="id" />
+    <item name="image_icon_id_4" type="id" />
+    <item name="image_icon_id_5" type="id" />
+    <item name="image_icon_id_6" type="id" />
+    <item name="image_icon_del_id_1" type="id" />
+    <item name="image_icon_del_id_2" type="id" />
+    <item name="image_icon_del_id_3" type="id" />
+    <item name="image_icon_del_id_4" type="id" />
+    <item name="image_icon_del_id_5" type="id" />
+    <item name="image_icon_del_id_6" type="id" />
+
+    <item name="iv_item_list_image_1" type="id" />
+    <item name="iv_item_list_image_2" type="id" />
+    <item name="iv_item_list_image_3" type="id" />
+    <item name="iv_item_list_image_4" type="id" />
+    <item name="iv_item_list_image_5" type="id" />
+    <item name="iv_item_list_image_6" type="id" />
+    <item name="iv_item_list_del_1" type="id" />
+    <item name="iv_item_list_del_2" type="id" />
+    <item name="iv_item_list_del_3" type="id" />
+    <item name="iv_item_list_del_4" type="id" />
+    <item name="iv_item_list_del_5" type="id" />
+    <item name="iv_item_list_del_6" type="id" />
+
+    <item name="rb_female" type="id"/>
+    <item name="rb_male" type="id"/>
+    <item name="rb_privacy" type="id"/>
+    <item name="default_fab_id" type="id">false</item>
+    <item name="show_floating_button"  type="id"/>
+    <item name="outfit_floating_button"  type="id"/>
+
+</resources>

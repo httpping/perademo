@@ -1,0 +1,26 @@
+<RelativeLayout
+    android:id="@+id/rl_address"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_72sdp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_gravity="bottom"
+    android:layout_alignParentBottom="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/color_dddddd"/>
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_48sdp"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp" />
+</RelativeLayout>

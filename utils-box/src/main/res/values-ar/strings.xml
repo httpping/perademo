@@ -1,0 +1,5 @@
+<resources>
+    <string name="brvah_loading">جار التحميل</string>
+    <string name="brvah_load_failed">فشل في تحميل المزيد</string>
+    <string name="brvah_load_end">لا يوجد مزيد من البيانات</string>
+</resources>

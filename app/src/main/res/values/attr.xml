@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="tv_title" format="string"/>
+    <attr name="et_content" format="string"/>
+
+
+    <declare-styleable name="EditTitleView">
+        <attr name="tv_title"  />
+        <attr name="et_content"/>
+    </declare-styleable>
+
+</resources>

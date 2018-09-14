@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:background="@color/white"
+    android:layout_margin="@dimen/dp_10"
+    android:layout_height="wrap_content">
+
+
+    <com.pera.tanping.peratech.framework.widget.RatioImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:ratio="2"
+        app:srcCompat="@mipmap/account_a" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buy (RED)@Give Life"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dp_16"
+        app:layout_constraintLeft_toRightOf="@id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="TextVi222ew"
+        android:textSize="@dimen/dp_12"
+        android:textColor="@color/color_666666"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintLeft_toLeftOf="@id/textView"
+        android:layout_marginBottom="@dimen/dp_10"
+        />
+</LinearLayout>

@@ -1,10 +1,10 @@
 package com.pera.tanping.peratech.framework.remote.config;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.kongzue.dialog.v2.WaitDialog;
 import com.tpnet.remote.RSubscriber;
 
 /**
@@ -17,7 +17,7 @@ public abstract class XSubscriber<T>
         extends RSubscriber<T> {
 
     public Context context;
-    public Dialog mAlertDialog;
+    public WaitDialog mAlertDialog;
     public boolean isShowDialog = false;
 
     public XSubscriber(Context context) {
@@ -31,8 +31,7 @@ public abstract class XSubscriber<T>
         this.isShowDialog = isShowDialog;
 
         if (isShowDialog) {
-            mAlertDialog = new ProgressDialog(context);
-            mAlertDialog.setCanceledOnTouchOutside(false);
+            mAlertDialog = WaitDialog.show(context,"加载中...");
         }
     }
 
@@ -43,7 +42,7 @@ public abstract class XSubscriber<T>
 
         try {
             if (isShowDialog) {
-                showRequestDialog();
+//                showRequestDialog();
             }
 
         } catch (Exception e) {
@@ -60,9 +59,9 @@ public abstract class XSubscriber<T>
 
             }
 
-          /*  if (mAlertDialog != null) {
-                mAlertDialog.dismissAllowingStateLoss();
-            }*/
+            if (mAlertDialog != null) {
+                mAlertDialog.doDismiss();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,19 +71,8 @@ public abstract class XSubscriber<T>
 
     private void showRequestDialog() {
 
-        if (mAlertDialog == null) {
-//            mAlertDialog = new LoadingDialogFragment();
-            mAlertDialog.setCanceledOnTouchOutside(false);
-        }
-
         try {
-            AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-            appCompatActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-//                    mAlertDialog.show(appCompatActivity.getSupportFragmentManager(), "loading_fragment");
-                }
-            });
+           mAlertDialog.showDialog();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -21,7 +21,7 @@ public class RequestParam extends VpRequestParams {
      final ConcurrentHashMap<String, String> publicParams = new ConcurrentHashMap<String, String>();
 
     public RequestParam() {
-
+        isJsonParams = false;
     }
 
 }

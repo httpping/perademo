@@ -25,6 +25,7 @@ package com.pera.tanping.peratech.framework.module.discover;
 */
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.pera.tanping.peratech.framework.bean.news.NewsBean;
 
 /**
  * @author tanping
@@ -34,4 +35,7 @@ public class DiscoverBean implements MultiItemEntity{
     public int getItemType() {
         return 0;
     }
+
+
+    public NewsBean value;
 }

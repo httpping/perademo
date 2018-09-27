@@ -30,7 +30,10 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.gb.bind.adapter.GBBaseBindAdapter;
 import com.gb.bind.annotations.BindItem;
+import com.pera.tanping.peratech.GlideApp;
 import com.pera.tanping.peratech.R;
+import com.pera.tanping.peratech.framework.bean.news.NewsBean;
+import com.pera.tanping.peratech.framework.widget.RatioImageView;
 
 import java.util.List;
 
@@ -59,7 +62,11 @@ public class DiscoverAdapter extends GBBaseBindAdapter<DiscoverBean,BaseViewHold
      */
     @BindItem(type = 0,layout = R.layout.item_discover)
     public void one(BaseViewHolder helper, DiscoverBean bean) throws Exception {
-
+        RatioImageView imageView = helper.getView(R.id.imageView);
+        NewsBean newsBean = bean.value;
+        imageView.setUrl(newsBean.img_url);
+        helper.setText(R.id.tv_title,newsBean.title);
+//        helper.setText(R.id.tv_desc,newsBean.title);
     }
 
     public DiscoverBean curDefaultAddress = null;
@@ -80,5 +87,6 @@ public class DiscoverAdapter extends GBBaseBindAdapter<DiscoverBean,BaseViewHold
      * @param GoodsBean
      */
     private void dealButtonSelect(DiscoverBean GoodsBean) {
+
     }
 }

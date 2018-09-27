@@ -25,7 +25,7 @@ public class ApiManager
     public synchronized static ApiManager newInstance() {
         if (dataManager == null){
             dataManager = new ApiManager();
-            dataManager.init(URLConfigs.API_HOST_URL);
+            dataManager.init("http://testapi.fnwcm.com/");
         }
         return  dataManager;
     }

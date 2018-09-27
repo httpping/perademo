@@ -51,14 +51,6 @@ public  abstract class XGsonSubscriber<RESPONSE>
         this.token = token;
 
     }
-    public XGsonSubscriber(Context context, boolean isShowDialog,Class ... cls){
-        super(context,isShowDialog);
-        this.context =context;
-        this.isShowDialog = isShowDialog;
-
-    }
-
-
 
 
     /**

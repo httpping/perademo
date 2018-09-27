@@ -93,7 +93,7 @@ public class AddressFragment extends BaseFragment {
         if(getArguments() != null){
             isFromWhere = getArguments().getInt(Constants.FROM_WHERE_TO_ADDRESS);
             addressId = getArguments().getString(Constants.ADDRESS_ID);
-            addressId = StringUtil.isNotEmpty(addressId) ? addressId : LoginManager.getInstance().readDefaultAddressId();
+//            addressId = StringUtil.isNotEmpty(addressId) ? addressId : LoginManager.getInstance().readDefaultAddressId();
         }
     }
 

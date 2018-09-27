@@ -4,11 +4,14 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.pera.tanping.peratech"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -124,6 +127,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    implementation 'com.kongzue.dialog:dialog:2.3.4'
 
     implementation 'com.youth.banner:banner:1.4.10'  //最新版本
 

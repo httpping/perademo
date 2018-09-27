@@ -81,7 +81,7 @@ public class VpHttpClient {
 			mRetrofit = new Retrofit.Builder().client(okHttpClient)
 					.baseUrl(mBaseUrl)
 					.addConverterFactory(StringConverterFactory.create())
-//					.addConverterFactory(GsonConverterFactory.create(FORM_TYPE))
+//					.addConverterFactory(GsonConverterFactory.create(JSON_TYPE))
 					.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 					.build();
 		}

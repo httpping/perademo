@@ -1,4 +1,4 @@
-package com.pera.tanping.peratech;
+package com.pera.tanping.peratech.framework.bean.user;
 /*
 
                    _ooOoo_
@@ -24,32 +24,35 @@ package com.pera.tanping.peratech;
 
 */
 
-import android.app.Application;
-import android.content.Context;
-
-import com.pera.tanping.peratech.framework.utils.SharedPreferencesUtil;
-import com.tp.cache.CacheManager;
+import java.util.List;
 
 /**
  * 项目名称: z
  * 类描述：
- * 创建时间:2018/8/13 11:11
+ * 创建时间:2018/9/25 14:34
  *
  * @author tanping
  */
-public class MainApplication  extends Application{
-    private static Context context;
-
-    public static Context getContext() {
-        return context;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        context = this;
-
-        CacheManager.init(this);
-
-    }
+public class UserBean {
+    public String id;
+    public int role_id;
+    public String role_type;
+    public String user_name;
+    public String password;
+    public String salt;
+    public String real_name;
+    public String telephone;
+    public String email;
+    public String is_lock;
+    public String add_time;
+    public String wxNum;
+    public String agentId;
+    public String reg_ip;
+    public String qq;
+    public String province;
+    public String city;
+    public String county;
+    public String remark;
+    public String sort_id;
+    public String agentLevel;
 }

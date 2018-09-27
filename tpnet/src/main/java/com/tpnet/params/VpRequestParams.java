@@ -402,7 +402,6 @@ public class VpRequestParams implements Serializable {
                 builder.add(entry.getKey(), entry.getValue());
             }
 
-
             return builder.build();
         }else { // body text
             JSONObject jsonObject = new JSONObject();

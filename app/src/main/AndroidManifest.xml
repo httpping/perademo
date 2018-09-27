@@ -67,17 +67,17 @@
 
         <activity android:name=".framework.module.goods.GoodsListActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
 
         <activity android:name=".framework.module.login.LoginActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".framework.module.discover.DiscoverActivity"
@@ -115,6 +115,9 @@
             android:windowSoftInputMode="stateHidden">
 
         </activity>
+
+        <activity android:name=".framework.module.discover.WebViewActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

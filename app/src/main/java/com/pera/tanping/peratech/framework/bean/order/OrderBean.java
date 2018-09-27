@@ -31,4 +31,23 @@ package com.pera.tanping.peratech.framework.bean.order;
  * @author tanping
  */
 public class OrderBean {
+
+
+    public String id;
+    public String categoryId;
+    public String brandid;
+    public String sku;
+    public String productName;
+    public String shortDesc;
+    public String description;
+    public String focusImgUrl;
+    public String thumbnailsUrll;
+    public String specialOffer;
+    public String costPrice;
+    public String marketPrice;
+    public String salePrice;
+    public String addDate;
+    public String productattrlist;
+    public int PageCount;
+    public String OrderNo;
 }

@@ -24,23 +24,33 @@ package com.pera.tanping.peratech.framework.module.discover;
 
 */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.base.BaseListFragment;
+import com.pera.tanping.peratech.framework.base.NetResult;
+import com.pera.tanping.peratech.framework.bean.news.NewsBean;
+import com.pera.tanping.peratech.framework.remote.ApiManager;
 import com.pera.tanping.peratech.framework.remote.config.RequestParam;
+import com.pera.tanping.peratech.framework.remote.config.XGsonSubscriber;
 import com.pera.tanping.peratech.framework.widget.MultiStatusView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  */
-public class DiscoverFragment extends BaseListFragment {
+public class DiscoverFragment extends BaseListFragment implements SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener ,BaseQuickAdapter.OnItemClickListener {
 
     private static final int DEFAULT_PAGE_SIZE = 20;
     public int isFromWhere ;
@@ -74,56 +84,97 @@ public class DiscoverFragment extends BaseListFragment {
         mRecyclerView.setBackgroundColor(getContext().getResources().getColor(R.color.color_f7f7f7));
         mRecyclerView.setAdapter(adapter);
 
+        adapter.setOnLoadMoreListener(this,mRecyclerView);
+        mSwipeRefresh.setOnRefreshListener(this);
+
+        adapter.setOnItemClickListener(this);
+
         reqData(false);
     }
 
     private void reqData(boolean showDialog){
         RequestParam param = new RequestParam();
-        param.put("page",1);
-        param.put("page_size",DEFAULT_PAGE_SIZE);
+        param.put("pageindex", page);
+        param.put("pagesize",DEFAULT_PAGE_SIZE);
 
-        for (int i =0 ;i<10;i++){
-            DiscoverBean bean = new DiscoverBean();
-            data.add(bean);
-        }
-
-        adapter.notifyDataSetChanged();
-
-
-      /*  ApiManager.addressApi().getAddressLits(param.createRequestBody())
+        ApiManager.Api().getDaList(param.createRequestBody())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new XGsonSubscriber<NetResult<AddressListBean>>(getContext(),showDialog) {
-
+                .subscribe(new XGsonSubscriber<NetResult<List<NewsBean>>>(getActivity(),showDialog) {
                     @Override
-                    public void showDialog() {
-                        super.showDialog();
-                        if(!showDialog){
-                            multiStatusView.showLoading();
-                        }
+                    public void onSuccess(NetResult<List<NewsBean>> listNetResult) {
+                            if (listNetResult.isSuccess()){
+                                createdData(listNetResult.Data);
+                                adapter.loadMoreComplete();
+                            }else{
+                                adapter.loadMoreEnd();
+                            }
                     }
 
-                    @Override
-                    public void onSuccess(NetResult<AddressListBean> bean) {
-                        data.clear();
-                        if(bean.isSuccess() && bean.result != null && bean.result.data != null && bean.result.data.size() > 0){
-                            multiStatusView.showContent();
-                            data.addAll(bean.result.data);
-                            // 地址数量超过5条不显示添加按钮
-                            rlAddress.setVisibility(data.size() >= 5 ? View.GONE : View.VISIBLE);
-                        }else{
-                            multiStatusView.showEmpty();
-                        }
-                        address.notifyDataSetChanged();
-                    }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        multiStatusView.showNoNetWork();
+                        adapter.loadMoreFail();
                     }
-                });*/
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+
+                        try {
+                            mSwipeRefresh.setRefreshing(false);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
     }
 
 
+    public void createdData(List<NewsBean> newsBeans){
+
+        if (page == 1){
+            data.clear();
+        }
+
+        for (int i =0 ;i<newsBeans.size();i++){
+            DiscoverBean bean = new DiscoverBean();
+            bean.value = newsBeans.get(i);
+            data.add(bean);
+        }
+
+        if (page ==1){
+            adapter.setNewData(data);
+        }else {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
+    @Override
+    public void onRefresh() {
+        page = 1 ;
+        reqData(false);
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        page++;
+        reqData(false);
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        try {
+            String url = data.get(position).value.link_url;
+            Intent intent = new Intent(getActivity(),WebViewActivity.class);
+            intent.putExtra(WebViewActivity.URL ,url);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

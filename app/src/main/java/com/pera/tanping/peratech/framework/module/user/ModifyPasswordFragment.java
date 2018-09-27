@@ -36,12 +36,24 @@ import android.widget.ScrollView;
 
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.base.BaseFragment;
+import com.pera.tanping.peratech.framework.base.NetResult;
+import com.pera.tanping.peratech.framework.bean.order.OrderBean;
+import com.pera.tanping.peratech.framework.remote.ApiManager;
+import com.pera.tanping.peratech.framework.remote.config.Constants;
+import com.pera.tanping.peratech.framework.remote.config.RequestParam;
+import com.pera.tanping.peratech.framework.remote.config.XGsonSubscriber;
+import com.pera.tanping.peratech.framework.remote.model.LoginManager;
+import com.pera.tanping.peratech.framework.utils.SharedPreferencesUtil;
 import com.pera.tanping.peratech.framework.widget.EditTitleView;
 import com.utils.ui.ToastUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  */
@@ -78,7 +90,7 @@ public class ModifyPasswordFragment extends BaseFragment implements View.OnClick
         llAccountPassword.etContent.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT);
         btSave.setOnClickListener(this);
 
-        reqData(false);
+//        reqData(false);
     }
 
     @Override
@@ -87,6 +99,40 @@ public class ModifyPasswordFragment extends BaseFragment implements View.OnClick
     }
 
     private void reqData(boolean showDialog) {
+        RequestParam param = new RequestParam();
+        try {
+            String userId = LoginManager.getInstance().getUser().id;
+            param.put("userid",userId);
+            param.put("newpass",modifyPasswordNewRetry.etContent.getText().toString().trim());
+        } catch (Exception e) {
+            LoginManager.getInstance().toLogin(getActivity());
+            e.printStackTrace();
+        }
+        ApiManager.Api().changePass(param.createRequestBody())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new XGsonSubscriber<NetResult<List<OrderBean>>>(getActivity(),showDialog) {
+                    @Override
+                    public void onSuccess(NetResult<List<OrderBean>> listNetResult) {
+                        if (listNetResult.isSuccess()){
+                            SharedPreferencesUtil.save(Constants.PASSWORD,modifyPasswordNewRetry.etContent.getText().toString());
+                        }
+                        listNetResult.showError(getActivity());
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+
+                        new NetResult<>().showError(getActivity());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+                });
 
     }
 
@@ -109,19 +155,14 @@ public class ModifyPasswordFragment extends BaseFragment implements View.OnClick
      */
     private void toSave() {
 
-        if (verity(llAccountOld, llAccountPassword, modifyPasswordNewRetry)) {
+        if (!verity(llAccountOld, llAccountPassword, modifyPasswordNewRetry)) {
             //请求接口
-            getActivity().finish();
+            return;
         }
 
-        if (verity(llAccountOld,llAccountPassword,modifyPasswordNewRetry)){
-            getActivity().finish();
+        if (equals(llAccountPassword,modifyPasswordNewRetry)){
+            reqData(true);
         }
-
-        if (verity(llAccountPassword,modifyPasswordNewRetry)){
-            //todo 去修改密码
-        }
-
 
 
     }

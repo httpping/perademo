@@ -33,6 +33,7 @@ import com.gb.bind.annotations.BindItem;
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.bean.order.OrderBean;
 import com.pera.tanping.peratech.framework.module.goods.OrderListFragment;
+import com.pera.tanping.peratech.framework.widget.RatioImageView;
 
 import java.util.List;
 
@@ -65,14 +66,29 @@ public class OrderListAdapter extends GBBaseBindAdapter<OrderBeanEnitity,BaseVie
      */
     @BindItem(type = TYPE_GOODS,layout = R.layout.item_order_view)
     public void one(BaseViewHolder helper, OrderBeanEnitity bean) throws Exception {
+        OrderBean orderBean = (OrderBean) bean.value;
+
+        RatioImageView ratioImageView = helper.getView(R.id.imageView2);
+        ratioImageView.setUrl(orderBean.focusImgUrl);
+
+        helper.setText(R.id.tv_title,orderBean.productName);
+        helper.setText(R.id.tv_price,"￥"+orderBean.salePrice);
+
     }
 
     @BindItem(type = TYPE_HEADER,layout = R.layout.item_order_header)
     public void header(BaseViewHolder helper, OrderBeanEnitity bean) throws Exception {
+        OrderBean orderBean = (OrderBean) bean.value;
+        helper.setText(R.id.tv_goods_number,"下单时间："+orderBean.addDate);
+
     }
 
     @BindItem(type = TYPE_FOOTER,layout = R.layout.item_order_footer)
     public void footer(BaseViewHolder helper, OrderBeanEnitity bean) throws Exception {
+        OrderBean orderBean = (OrderBean) bean.value;
+//        helper.setText(R.id.tv_goods_number,);
+        helper.setText(R.id.tv_order_price,orderBean.salePrice);
+
     }
 
     @Override

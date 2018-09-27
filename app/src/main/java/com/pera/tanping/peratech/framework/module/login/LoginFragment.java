@@ -37,13 +37,23 @@ import android.widget.LinearLayout;
 import com.pera.tanping.peratech.MainActivity;
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.base.BaseFragment;
+import com.pera.tanping.peratech.framework.base.NetResult;
+import com.pera.tanping.peratech.framework.bean.user.UserBean;
+import com.pera.tanping.peratech.framework.remote.ApiManager;
 import com.pera.tanping.peratech.framework.remote.config.Constants;
+import com.pera.tanping.peratech.framework.remote.config.RequestParam;
+import com.pera.tanping.peratech.framework.remote.config.XGsonSubscriber;
+import com.pera.tanping.peratech.framework.remote.model.LoginManager;
 import com.pera.tanping.peratech.framework.utils.SharedPreferencesUtil;
 import com.pera.tanping.peratech.framework.utils.StringUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 项目名称: pera
@@ -120,14 +130,30 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         }
         String  sss= etLoginEmail.getText().toString();
 
-        SharedPreferencesUtil.save(Constants.USERNAME,etLoginEmail.getText().toString());
-        SharedPreferencesUtil.save(Constants.PASSWORD,etLoginPassword.getText().toString());
 
-        String username =  SharedPreferencesUtil.getString(Constants.USERNAME);
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+        RequestParam param = new RequestParam();
+        param.put("username",etLoginEmail.getText().toString());
+        param.put("pass",etLoginPassword.getText().toString());
+        ApiManager.Api().login(param.createRequestBody())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new XGsonSubscriber<NetResult<List<UserBean>>>(getActivity(),true) {
+            @Override
+            public void onSuccess(NetResult<List<UserBean>> listNetResult) {
+                if (listNetResult.isSuccess()){
+                    LoginManager.getInstance().saveUser(listNetResult.Data.get(0));
+                    SharedPreferencesUtil.save(Constants.USERNAME,etLoginEmail.getText().toString());
+                    SharedPreferencesUtil.save(Constants.PASSWORD,etLoginPassword.getText().toString());
 
-        getActivity().finish();
+                    String username =  SharedPreferencesUtil.getString(Constants.USERNAME);
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            }
+
+
+        });
 
     }
 }

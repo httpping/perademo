@@ -49,7 +49,7 @@ public class EditAddressActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        toolbar.setTitle(R.string.txt_recevie_people);
+        toolbar.setTitle(R.string.txt_address_manager);
     }
 
     @Override

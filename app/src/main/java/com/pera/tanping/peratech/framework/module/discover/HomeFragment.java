@@ -25,6 +25,7 @@ package com.pera.tanping.peratech.framework.module.discover;
 */
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,23 +37,33 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.pera.tanping.peratech.GlideApp;
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.base.BaseListFragment;
+import com.pera.tanping.peratech.framework.base.NetResult;
+import com.pera.tanping.peratech.framework.bean.IndexCategoryBean;
+import com.pera.tanping.peratech.framework.bean.news.NewsBean;
+import com.pera.tanping.peratech.framework.module.goods.GoodsListActivity;
+import com.pera.tanping.peratech.framework.remote.ApiManager;
 import com.pera.tanping.peratech.framework.remote.config.RequestParam;
+import com.pera.tanping.peratech.framework.remote.config.XGsonSubscriber;
 import com.pera.tanping.peratech.framework.utils.ScreenUtil;
 import com.pera.tanping.peratech.framework.widget.MultiStatusView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.pera.tanping.peratech.framework.module.discover.HomeBeanEnitiy.TYPE_CATEGORY;
 import static com.pera.tanping.peratech.framework.module.discover.HomeBeanEnitiy.TYPE_HEADER;
 
 /**
  */
-public class HomeFragment extends BaseListFragment {
+public class HomeFragment extends BaseListFragment implements BaseQuickAdapter.OnItemClickListener{
 
     private static final int DEFAULT_PAGE_SIZE = 20;
     private HomeAdapter adapter;
@@ -89,38 +100,50 @@ public class HomeFragment extends BaseListFragment {
         });
         mRecyclerView.setBackgroundColor(getContext().getResources().getColor(R.color.color_f7f7f7));
         mRecyclerView.setAdapter(adapter);
-        createBanner();
+//        createBanner();
 
-        reqData(false);
+        adapter.setOnItemClickListener(this);
+        mSwipeRefresh.setEnabled(false);
+        reqBannerData(false);
+        requestCategroy(true);
     }
 
 
-    public void createBanner(){
+    public void createBanner(List<NewsBean> newsBeans){
 
         Banner banner = new Banner(getContext());
-        //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+
         //设置图片加载器
         banner.setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
-                BannerBean bannerBean = (BannerBean) path;
-                GlideApp.with(getContext().getApplicationContext()).asBitmap().load(bannerBean.url).into(imageView);
+                NewsBean newsBean = (NewsBean) path;
+                GlideApp.with(getContext().getApplicationContext()).asBitmap().load(newsBean.img_url).into(imageView);
             }
         });
 
-        List<BannerBean> bannerBeans = new ArrayList<>();
-        List<String> titles = new ArrayList<>();
-        for (int i=0;i<5;i++){
-            BannerBean bannerBean = new BannerBean();
-            bannerBean.url = "https://f11.baidu.com/it/u=2465775762,1509670197&fm=72";
-            bannerBeans.add(bannerBean);
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                try {
+                    NewsBean newsBean = newsBeans.get(position);
+                    String url = newsBean.link_url;
+                    Intent intent = new Intent(getActivity(),WebViewActivity.class);
+                    intent.putExtra(WebViewActivity.URL ,url);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-            titles.add("i");
+        List<String> titles = new ArrayList<>();
+        for (int i=0;i<newsBeans.size();i++){
+            titles.add(newsBeans.get(i).title);
         }
 
         //设置图片集合
-        banner.setImages(bannerBeans);
+        banner.setImages(newsBeans);
         banner.setBannerTitles(titles);
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.DepthPage);
@@ -130,71 +153,123 @@ public class HomeFragment extends BaseListFragment {
         banner.setDelayTime(1500);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
+        //设置banner样式
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
 
         adapter.addHeaderView(banner);
 
-        banner.getLayoutParams().height = ScreenUtil.getScreenWidth(getContext())/2;
+        banner.getLayoutParams().height = ScreenUtil.getScreenWidth(getContext())*3/4;
     }
 
-
-    private void reqData(boolean showDialog){
+    private void reqBannerData(boolean showDialog){
         RequestParam param = new RequestParam();
-        param.put("page",1);
-        param.put("page_size",DEFAULT_PAGE_SIZE);
-
-        for (int i =0 ;i<10;i++){
-            HomeBeanEnitiy bean = new HomeBeanEnitiy();
-
-            bean.type = TYPE_HEADER;
-            data.add(bean);
-
-
-            for (int j=0;j<8;j++){
-                bean = new HomeBeanEnitiy();
-                bean.type = TYPE_CATEGORY;
-                data.add(bean);
-            }
-        }
-
-        adapter.notifyDataSetChanged();
-
-
-      /*  ApiManager.addressApi().getAddressLits(param.createRequestBody())
+        param.put("pageindex", page);
+        param.put("pagesize",5);
+        ApiManager.Api().getDaList(param.createRequestBody())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new XGsonSubscriber<NetResult<AddressListBean>>(getContext(),showDialog) {
-
+                .subscribe(new XGsonSubscriber<NetResult<List<NewsBean>>>(getActivity(),showDialog) {
                     @Override
-                    public void showDialog() {
-                        super.showDialog();
-                        if(!showDialog){
-                            multiStatusView.showLoading();
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(NetResult<AddressListBean> bean) {
-                        data.clear();
-                        if(bean.isSuccess() && bean.result != null && bean.result.data != null && bean.result.data.size() > 0){
-                            multiStatusView.showContent();
-                            data.addAll(bean.result.data);
-                            // 地址数量超过5条不显示添加按钮
-                            rlAddress.setVisibility(data.size() >= 5 ? View.GONE : View.VISIBLE);
+                    public void onSuccess(NetResult<List<NewsBean>> listNetResult) {
+                        if (listNetResult.isSuccess()){
+                            createBanner(listNetResult.Data);
+                            adapter.loadMoreComplete();
                         }else{
-                            multiStatusView.showEmpty();
+                            adapter.loadMoreEnd();
                         }
-                        address.notifyDataSetChanged();
                     }
+
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        multiStatusView.showNoNetWork();
+                        adapter.loadMoreFail();
                     }
-                });*/
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+
+                        try {
+                            mSwipeRefresh.setRefreshing(false);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+    }
+
+    private void requestCategroy(boolean showDialog){
+        RequestParam param = new RequestParam();
+        ApiManager.Api().getCategoryList(param.createRequestBody())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new XGsonSubscriber<NetResult<List<IndexCategoryBean>>>(getActivity(),showDialog) {
+                    @Override
+                    public void onSuccess(NetResult<List<IndexCategoryBean>> listNetResult) {
+                        if (listNetResult.isSuccess()){
+                            showIndexCategory(listNetResult.Data);
+                            adapter.loadMoreComplete();
+                        }else{
+                            adapter.loadMoreEnd();
+                        }
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        adapter.loadMoreFail();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+
+                        try {
+                            mSwipeRefresh.setRefreshing(false);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
     }
 
 
+
+
+
+    private void showIndexCategory(List<IndexCategoryBean> indexCategoryBeans){
+        HomeBeanEnitiy bean = new HomeBeanEnitiy();
+        bean.type = TYPE_HEADER;
+        data.add(bean);
+        for (int i =0 ;i<indexCategoryBeans.size();i++){
+            bean = new HomeBeanEnitiy();
+            bean.type = TYPE_CATEGORY;
+            bean.value = indexCategoryBeans.get(i);
+            data.add(bean);
+
+        }
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            if (data.get(position).type == TYPE_CATEGORY){
+                IndexCategoryBean indexCategoryBean = (IndexCategoryBean) data.get(position).value;
+                Intent intent = new Intent(getActivity(), GoodsListActivity.class);
+                intent.putExtra(GoodsListActivity.CATEGORY_ID,indexCategoryBean.id+"");
+                intent.putExtra(GoodsListActivity.CATEGORY_NAME,indexCategoryBean.title+"");
+                startActivity(intent);
+            }
+    }
 }

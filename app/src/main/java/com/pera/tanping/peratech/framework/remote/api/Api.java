@@ -63,4 +63,66 @@ public interface Api {
      */
     @POST("api/changepass/do")
     Flowable<String> changePass(@Body RequestBody params);
+
+
+
+    /**
+     * 获取用户信息
+     * api/getuserinfo/do
+     */
+    @POST("api/getuserinfo/do")
+    Flowable<String> getUserInfo(@Body RequestBody params);
+
+
+
+    /**
+     * 获取用户城市列表
+     * api/getuserinfo/do
+     */
+    @POST("api/address/getaddresslist")
+    Flowable<String> getAddressList(@Body RequestBody params);
+
+
+    /**
+     *  获取类目(首页产品一级分类)列表
+     * api/getuserinfo/do
+     */
+    @POST("api/category/getcategorylist")
+    Flowable<String> getCategoryList(@Body RequestBody params);
+
+
+
+    /**
+     *  获取类目(首页产品一级分类)列表
+     *  api/brand/getbrandlist
+     */
+    @POST("api/brand/getbrandlist")
+    Flowable<String> getBrandList(@Body RequestBody params);
+
+
+    /**
+     *  获取产品列表
+     *  api/brand/getbrandlist
+     */
+    @POST("api/product/getproductlist")
+    Flowable<String> getProductList(@Body RequestBody params);
+
+
+
+    /**
+     *  获取产品详情
+     *  api/brand/getbrandlist
+     */
+    @POST("api/ProductInfo/getinfo")
+    Flowable<String> getProductInfo(@Body RequestBody params);
+
+
+
+    /**
+     * 会员下订单
+     *  api/brand/getbrandlist
+     */
+    @POST("api/setorder/do")
+    Flowable<String> createdOrder(@Body RequestBody params);
+
 }

@@ -30,6 +30,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.gb.bind.adapter.GBBaseBindAdapter;
 import com.gb.bind.annotations.BindItem;
 import com.pera.tanping.peratech.R;
+import com.pera.tanping.peratech.framework.bean.goods.BrandBean;
 
 import java.util.List;
 
@@ -53,7 +54,10 @@ public class FilterDataAdapter extends GBBaseBindAdapter<FilterDataEnitity,BaseV
      * @throws Exception
      */
     @BindItem(type = FILTER_DATA,layout = R.layout.item_filter_data_view)
-    public void one(BaseViewHolder helper, OrderBeanEnitity bean) throws Exception {
+    public void one(BaseViewHolder helper, FilterDataEnitity bean) throws Exception {
+        BrandBean brandBean = (BrandBean) bean.value;
+        helper.setText(R.id.tv_data,brandBean.cTitle);
+
     }
 
 

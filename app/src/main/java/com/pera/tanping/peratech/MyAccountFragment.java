@@ -35,12 +35,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pera.tanping.peratech.framework.base.BaseFragment;
+import com.pera.tanping.peratech.framework.bean.user.UserBean;
 import com.pera.tanping.peratech.framework.module.address.EditAddressActivity;
 import com.pera.tanping.peratech.framework.module.goods.OrderActivity;
 import com.pera.tanping.peratech.framework.module.login.LoginActivity;
 import com.pera.tanping.peratech.framework.module.user.ModifyPassowrdActivity;
 import com.pera.tanping.peratech.framework.module.user.MyAcountActivity;
 import com.pera.tanping.peratech.framework.remote.config.Constants;
+import com.pera.tanping.peratech.framework.remote.model.LoginManager;
 import com.pera.tanping.peratech.framework.utils.SharedPreferencesUtil;
 
 import butterknife.BindView;
@@ -94,6 +96,12 @@ public class MyAccountFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         multiStatusView.showContent();
         unbinder = ButterKnife.bind(this, multiStatusView);
+
+
+        UserBean userBean =  LoginManager.getInstance().getUser();
+        if (userBean !=null){
+            tvWelcome.setText(userBean.real_name);
+        }
 
     }
 

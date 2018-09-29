@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import com.pera.tanping.peratech.framework.base.BaseFragment;
 import com.pera.tanping.peratech.framework.module.discover.DiscoverFragment;
 import com.pera.tanping.peratech.framework.module.discover.HomeFragment;
+import com.pera.tanping.peratech.framework.remote.model.AddressManager;
+import com.tp.cache.CacheManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
+
+        AddressManager.getInstance().readAddress(this,false);
 
         initView();
         initData();
@@ -104,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                                 //是否还停留在当前页签
                                 boolean tabNotChanged = mBottomBarLayout.getCurrentItem() == currentPosition;
                                 //更换成首页原来选中图标
-                                bottomBarItem.setIconSelectedResourceId(R.mipmap.tab_home_selected);
+                                bottomBarItem.setIconSelectedResourceId(R.mipmap.tab_home_selected1);
                                 //刷新图标
                                 bottomBarItem.setStatus(tabNotChanged);
                                 cancelTabLoading(bottomBarItem);
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 //如果点击了其他条目
                 BottomBarItem bottomItem = mBottomBarLayout.getBottomItem(0);
                 //更换为原来的图标
-                bottomItem.setIconSelectedResourceId(R.mipmap.tab_home_selected);
+                bottomItem.setIconSelectedResourceId(R.mipmap.tab_home_selected1);
                 //停止旋转动画
                 cancelTabLoading(bottomItem);
             }

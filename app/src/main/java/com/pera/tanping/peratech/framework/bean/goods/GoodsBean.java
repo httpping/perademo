@@ -33,6 +33,25 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * @author tanping
  */
 public class GoodsBean implements MultiItemEntity{
+
+
+    public int id;
+    public int categoryId;
+    public int brandid;
+    public String sku;
+    public String productName;
+    public String shortDesc;
+    public String description;
+    public String focusImgUrl;
+    public String thumbnailsUrll;
+    public String specialOffer;
+    public String costPrice;
+    public String marketPrice;
+    public double salePrice;
+    public String addDate;
+    public String productattrlist;
+    public int PageCount;
+
     @Override
     public int getItemType() {
         return 0;

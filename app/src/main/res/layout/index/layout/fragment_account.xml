@@ -78,6 +78,7 @@
                 android:visibility="gone" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_my_account"
                 style="@style/MyAccountListTextView"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -96,7 +97,7 @@
                 android:paddingStart="@dimen/_16sdp"
                 android:textDirection="locale"
                 android:background="@color/white"
-                android:drawableStart="@mipmap/ic_address"
+                android:drawableStart="@mipmap/icon_my_order"
                 android:text="@string/text_my_order" />
 
             <TextView
@@ -107,7 +108,7 @@
                 android:paddingStart="@dimen/_16sdp"
                 android:textDirection="locale"
                 android:background="@color/white"
-                android:drawableStart="@mipmap/ic_address"
+                android:drawableStart="@mipmap/icon_address"
                 android:text="@string/txt_address_manager" />
 
             <TextView
@@ -118,7 +119,7 @@
                 android:paddingStart="@dimen/_16sdp"
                 android:background="@color/white"
                 android:textDirection="locale"
-                android:drawableStart="@mipmap/ic_address"
+                android:drawableStart="@mipmap/icon_my_pass"
                 android:text="@string/txt_modify_password" />
 
             <TextView
@@ -129,7 +130,7 @@
                 android:paddingStart="@dimen/_16sdp"
                 android:background="@color/white"
                 android:textDirection="locale"
-                android:drawableStart="@mipmap/ic_address"
+                android:drawableStart="@mipmap/icon_my_login"
                 android:text="@string/txt_signout" />
 
 

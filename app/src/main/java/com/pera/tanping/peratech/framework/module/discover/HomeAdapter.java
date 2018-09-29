@@ -31,6 +31,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.gb.bind.adapter.GBBaseBindAdapter;
 import com.gb.bind.annotations.BindItem;
 import com.pera.tanping.peratech.R;
+import com.pera.tanping.peratech.framework.bean.IndexCategoryBean;
+import com.pera.tanping.peratech.framework.widget.RatioImageView;
 
 import java.util.List;
 
@@ -61,7 +63,11 @@ public class HomeAdapter extends GBBaseBindAdapter<HomeBeanEnitiy,BaseViewHolder
 
     @BindItem(type = TYPE_CATEGORY,layout = R.layout.item_home_category)
     public void category(BaseViewHolder helper, HomeBeanEnitiy bean) throws Exception {
+        RatioImageView ratioImageView =  helper.getView(R.id.tv_desc);
+        IndexCategoryBean categoryBean = (IndexCategoryBean) bean.value;
+        ratioImageView.setUrl(categoryBean.ico_url);
 
+        helper.setText(R.id.tv_title,categoryBean.title);
     }
 
     @Override

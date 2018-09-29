@@ -87,7 +87,7 @@ public class OrderListAdapter extends GBBaseBindAdapter<OrderBeanEnitity,BaseVie
     public void footer(BaseViewHolder helper, OrderBeanEnitity bean) throws Exception {
         OrderBean orderBean = (OrderBean) bean.value;
 //        helper.setText(R.id.tv_goods_number,);
-        helper.setText(R.id.tv_order_price,orderBean.salePrice);
+        helper.setText(R.id.tv_order_price,"￥"+orderBean.salePrice);
 
     }
 

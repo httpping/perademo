@@ -100,8 +100,8 @@ public class OrderListFragment extends BaseListFragment  implements SwipeRefresh
         try {
             String userId = LoginManager.getInstance().getUser().id;
             param.put("userid",userId);
-            param.put("userid",38);
-            param.put("orderno","201809161459245924112");
+//            param.put("userid",38);
+//            param.put("orderno","201809161459245924112");
         } catch (Exception e) {
             LoginManager.getInstance().toLogin(getActivity());
             e.printStackTrace();

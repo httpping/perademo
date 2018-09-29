@@ -30,12 +30,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
-                android:background="@color/color_e5e5e5" />
+                android:background="@color/color_e5e5e5"
+                android:visibility="gone"/>
 
             <com.pera.tanping.peratech.framework.widget.EditTitleView
                 android:id="@+id/ll_account_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:et_content="@string/myaccount_address_phone"
                 app:tv_title="@string/myaccount_address_phone" />
 

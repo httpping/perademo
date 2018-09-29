@@ -76,4 +76,13 @@ public class StringUtil {
 
         return  str;
     }
+
+    public  static final String PATH = "http://testadmin.fnwcm.com";
+    public static String getImagePath(String url){
+        if (url !=null && !url.startsWith("http")){
+            return PATH + url;
+        }
+
+        return url ;
+    }
 }

@@ -114,7 +114,7 @@
                     android:layout_marginLeft="@dimen/dp_5"
                     android:gravity="center"
                     android:inputType="number"
-                    android:text="2"
+                    android:text="1"
                     android:textColor="@color/black" />
 
                 <ImageView

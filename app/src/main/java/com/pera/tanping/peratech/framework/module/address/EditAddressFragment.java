@@ -34,12 +34,28 @@ import android.widget.ScrollView;
 
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.base.BaseFragment;
+import com.pera.tanping.peratech.framework.base.NetResult;
+import com.pera.tanping.peratech.framework.bean.address.CityBean;
+import com.pera.tanping.peratech.framework.bean.order.OrderBean;
+import com.pera.tanping.peratech.framework.bean.user.AddressBean;
+import com.pera.tanping.peratech.framework.remote.ApiManager;
+import com.pera.tanping.peratech.framework.remote.config.Constants;
+import com.pera.tanping.peratech.framework.remote.config.RequestParam;
+import com.pera.tanping.peratech.framework.remote.config.XGsonSubscriber;
+import com.pera.tanping.peratech.framework.remote.model.AddressManager;
+import com.pera.tanping.peratech.framework.remote.model.LoginManager;
+import com.pera.tanping.peratech.framework.utils.SharedPreferencesUtil;
 import com.pera.tanping.peratech.framework.widget.EditTitleView;
+import com.tp.cache.CacheManager;
 import com.utils.ui.ToastUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  */
@@ -60,6 +76,9 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     Button btSave;
     Unbinder unbinder;
 
+
+    AddressBean mAddressBean ;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +96,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
         btSave.setOnClickListener(this);
 
-        reqData(false);
+        reqData(true);
     }
 
     @Override
@@ -86,7 +105,48 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void reqData(boolean showDialog) {
+        RequestParam param = new RequestParam();
+        try {
+            String userId = LoginManager.getInstance().getUser().id;
+            param.put("userid",userId);
+        } catch (Exception e) {
+            LoginManager.getInstance().toLogin(getActivity());
+            e.printStackTrace();
+        }
+        ApiManager.Api().getUserInfo(param.createRequestBody())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new XGsonSubscriber<NetResult<List<AddressBean>>>(getActivity(),showDialog) {
+                    @Override
+                    public void onSuccess(NetResult<List<AddressBean>> listNetResult) {
+                        if (listNetResult.isSuccess()){
+                            mAddressBean = listNetResult.Data.get(0);
+                            updateView();
+                        }else {
+                            listNetResult.showError(getActivity());
+                        }
+                    }
 
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+
+                        new NetResult<>().showError(getActivity());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+                });
+    }
+
+
+    public void updateView(){
+        llAccountName.etContent.setText(mAddressBean.real_name);
+        llAccountArea.etContent.setText(mAddressBean.city);
+        llAccountDetail.etContent.setText(mAddressBean.address);
     }
 
 
@@ -108,13 +168,67 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
      */
     private void toSave() {
 
-        if (verity(llAccountName,llAccountPhone,llAccountArea,llAccountDetail)){
+        if (verity(llAccountName,llAccountArea,llAccountDetail)){
             //请求接口
-            getActivity().finish();
+
+            List<CityBean> cityBeans =  CacheManager.get("city_list");
+            if (cityBeans == null){
+                AddressManager.getInstance().readAddress(getActivity(),true);
+                return;
+            }
+
+            CityBean cityBean = new CityBean();
+            cityBean.name = llAccountArea.etContent.getText().toString();
+
+            int postition = cityBeans.indexOf(cityBean);
+            if (postition < 0){
+                ToastUtil.showToast(getContext(),"您的城市不再覆盖区..");
+                return;
+            }
+            cityBean = cityBeans.get(postition);
+
+            editData(cityBean.id,true);
         }
 
 
     }
+
+
+    private void editData(int cityId ,boolean showDialog) {
+        RequestParam param = new RequestParam();
+        try {
+            String userId = LoginManager.getInstance().getUser().id;
+            param.put("userid",userId);
+            param.put("countryid",cityId);
+            param.put("address",llAccountDetail.etContent.getText().toString());
+        } catch (Exception e) {
+            LoginManager.getInstance().toLogin(getActivity());
+            e.printStackTrace();
+        }
+        ApiManager.Api().getAddressList(param.createRequestBody())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new XGsonSubscriber<NetResult<List<String>>>(getActivity(),showDialog) {
+                    @Override
+                    public void onSuccess(NetResult<List<String>> listNetResult) {
+                        listNetResult.showError(getActivity());
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+
+                        new NetResult<>().showError(getActivity());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+                });
+    }
+
 
     public boolean verity(EditTitleView ... editTitleViews){
 

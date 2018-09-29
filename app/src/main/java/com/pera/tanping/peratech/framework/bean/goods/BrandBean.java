@@ -1,4 +1,4 @@
-package com.pera.tanping.peratech.framework.module.goods;
+package com.pera.tanping.peratech.framework.bean.goods;
 /*
 
                    _ooOoo_
@@ -24,31 +24,18 @@ package com.pera.tanping.peratech.framework.module.goods;
 
 */
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.View;
-
-import com.pera.tanping.peratech.framework.base.BaseActivity;
-
 /**
+ * 项目名称: z
  * 类描述：
- * 创建时间:2018/9/8 8:35
+ * 创建时间:2018/9/28 11:58
  *
  * @author tanping
  */
-public class GoodsDetaillActivity extends BaseActivity {
-
-    public static final String PRODUCT_ID ="product_id";
-
-    @Override
-    public Fragment getContentFragment() {
-        return GoodsDetailFragment.getInstance(getIntent().getExtras());
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        toolbar.setVisibility(View.GONE);
-
-    }
+public class BrandBean {
+    public int id;
+    public int wid;
+    public String cTitle;
+    public String remark;
+    public int sort_id;
+    public String createDate;
 }

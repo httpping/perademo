@@ -32,7 +32,9 @@ import com.gb.bind.adapter.GBBaseBindAdapter;
 import com.gb.bind.annotations.BindItem;
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.bean.goods.GoodsBean;
+import com.pera.tanping.peratech.framework.bean.order.OrderBean;
 import com.pera.tanping.peratech.framework.module.goods.GoodsListFragment;
+import com.pera.tanping.peratech.framework.widget.RatioImageView;
 
 import java.util.List;
 
@@ -62,6 +64,11 @@ public class GoodsListAdapter extends GBBaseBindAdapter<GoodsBean,BaseViewHolder
     @BindItem(type = 0,layout = R.layout.item_goods_view)
     public void one(BaseViewHolder helper, GoodsBean bean) throws Exception {
 
+        RatioImageView ratioImageView = helper.getView(R.id.imageView2);
+        ratioImageView.setUrl(bean.focusImgUrl);
+
+        helper.setText(R.id.tv_title,bean.productName);
+        helper.setText(R.id.tv_price,"￥"+bean.salePrice);
     }
 
     public GoodsBean curDefaultAddress = null;

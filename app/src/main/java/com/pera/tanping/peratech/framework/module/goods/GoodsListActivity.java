@@ -37,25 +37,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.base.BaseActivity;
+import com.pera.tanping.peratech.framework.base.NetResult;
+import com.pera.tanping.peratech.framework.bean.IndexCategoryBean;
+import com.pera.tanping.peratech.framework.bean.goods.BrandBean;
 import com.pera.tanping.peratech.framework.module.address.AddressConstants;
 import com.pera.tanping.peratech.framework.module.goods.adapter.FilterDataAdapter;
 import com.pera.tanping.peratech.framework.module.goods.adapter.FilterDataEnitity;
+import com.pera.tanping.peratech.framework.remote.ApiManager;
 import com.pera.tanping.peratech.framework.remote.config.Constants;
+import com.pera.tanping.peratech.framework.remote.config.RequestParam;
+import com.pera.tanping.peratech.framework.remote.config.XGsonSubscriber;
+import com.pera.tanping.peratech.framework.utils.StringUtil;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.pera.tanping.peratech.framework.module.address.AddressConstants.EnterAddress.checkout;
 
 
 /**
  */
-public class GoodsListActivity extends BaseActivity {
+public class GoodsListActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -70,17 +80,23 @@ public class GoodsListActivity extends BaseActivity {
     private int isSelectAddress;
     private String addressId;
 
+    public static String CATEGORY_ID ="category_id";
+    public static String CATEGORY_NAME ="category_name";
 
-    GoodsCategoryFragment goodsCategoryFragment;
+
+    //品牌过滤
+    public boolean brandFiflter ;
+
+    GoodsListFragment goodsListFragment;
+    private FilterDataAdapter filterDataAdapter;
 
     @Override
     public Fragment getContentFragment() {
         getExtraData();
-        GoodsCategoryFragment categoryFragment = new GoodsCategoryFragment();
+        goodsListFragment = new GoodsListFragment();
         Bundle bundle = new Bundle();
-        categoryFragment.setArguments(bundle);
-        goodsCategoryFragment = categoryFragment;
-        return categoryFragment;
+        goodsListFragment.setArguments(bundle);
+        return goodsListFragment;
     }
 
     @Override
@@ -91,7 +107,6 @@ public class GoodsListActivity extends BaseActivity {
     private void getExtraData() {
         if (getIntent() != null) {
             isSelectAddress = getIntent().getIntExtra(AddressConstants.FROM_WHERE_TO_ADDRESS, 0);
-            addressId = getIntent().getStringExtra(Constants.ADDRESS_ID);
         }
     }
 
@@ -104,35 +119,51 @@ public class GoodsListActivity extends BaseActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onToolbarNavigationClick();
             }
         });
+
+        String category =  getIntent().getStringExtra(CATEGORY_ID);
         getContentFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,goodsCategoryFragment).commit();
+        goodsListFragment.categoryid = category;
+
+        String categoryName =  getIntent().getStringExtra(CATEGORY_NAME);
+        if (StringUtil.isEmpty(categoryName)) {
+            toolbar.setTitle("商品列表");
+        }else {
+            toolbar.setTitle(categoryName);
+        }
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,goodsListFragment).commit();
 
 
-        filterData();
+        getBrandList(false);
     }
 
     /**
      * 过滤数据
      */
-    public void filterData(){
+    public void filterData(List<BrandBean> brandBeans){
 
         List<FilterDataEnitity> data = new LinkedList<>();
-        for (int i=0;i<10;i++){
+        for (int i=0;i<brandBeans.size();i++){
             FilterDataEnitity enitity = new FilterDataEnitity();
             enitity.type = FilterDataEnitity.FILTER_DATA;
+            enitity.value = brandBeans.get(i);
             data.add(enitity);
 
         }
 
-        FilterDataAdapter adapter = new FilterDataAdapter(data);
+        filterDataAdapter = new FilterDataAdapter(data);
+        filterDataAdapter.setOnItemClickListener(this);
         rvRight.setLayoutManager(new LinearLayoutManager(this));
-        rvRight.setAdapter(adapter);
+        rvRight.setAdapter(filterDataAdapter);
+        brandFiflter =true;
+
     }
 
     @Override
@@ -162,4 +193,50 @@ public class GoodsListActivity extends BaseActivity {
     }
 
 
+
+
+
+    private void getBrandList(boolean showDialog){
+        RequestParam param = new RequestParam();
+        ApiManager.Api().getBrandList(param.createRequestBody())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new XGsonSubscriber<NetResult<List<BrandBean>>>(this,showDialog) {
+                    @Override
+                    public void onSuccess(NetResult<List<BrandBean>> listNetResult) {
+                        if (listNetResult.isSuccess()){
+                            filterData(listNetResult.Data);
+                        }else{
+                        }
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+
+                    }
+                });
+
+
+    }
+
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+        FilterDataEnitity filterDataEnitity = filterDataAdapter.getData().get(position);
+        BrandBean brandBean = (BrandBean) filterDataEnitity.value;
+
+        goodsListFragment.catalogid = brandBean.id+"";
+
+        goodsListFragment.onRefresh();
+
+        drawerLayout.closeDrawers();
+    }
 }

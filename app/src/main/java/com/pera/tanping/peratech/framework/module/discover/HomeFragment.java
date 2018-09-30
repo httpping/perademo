@@ -154,7 +154,7 @@ public class HomeFragment extends BaseListFragment implements BaseQuickAdapter.O
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(BannerConfig.NUM_INDICATOR);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
 

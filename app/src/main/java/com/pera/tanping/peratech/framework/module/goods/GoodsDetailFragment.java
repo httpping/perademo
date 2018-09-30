@@ -183,7 +183,7 @@ public class GoodsDetailFragment extends BaseFragment {
 
         Banner banner = goodsPictrue;
         //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(BannerConfig.NUM_INDICATOR);
         //设置图片加载器
         banner.setImageLoader(new ImageLoader() {
             @Override
@@ -272,11 +272,11 @@ public class GoodsDetailFragment extends BaseFragment {
         goodsModel.setText(goodsBean.productName);
         goodsDesc.loadData(goodsBean.description,"text/html", "UTF -8");
 
-        String[] pics = goodsBean.focusImgUrl.split(",");
+        String[] pics = goodsBean.thumbnailsUrll.split(",");
         List arrayList = new ArrayList();
         if (pics!=null){
             for (int i =0;i<pics.length;i++){
-                arrayList.add(goodsBean.thumbnailsUrll + pics[i]);
+                arrayList.add( pics[i]);
             }
         }
         createBanner(arrayList);

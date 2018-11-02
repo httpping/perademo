@@ -31,7 +31,7 @@
     <item name="rb_female" type="id"/>
     <item name="rb_male" type="id"/>
     <item name="rb_privacy" type="id"/>
-    <item name="default_fab_id" type="id">false</item>
+    <item name="default_fab_id" type="id"/>
     <item name="show_floating_button"  type="id"/>
     <item name="outfit_floating_button"  type="id"/>
 

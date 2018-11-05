@@ -44,6 +44,7 @@ import com.pera.tanping.peratech.framework.base.BaseFragment;
 import com.pera.tanping.peratech.framework.base.NetResult;
 import com.pera.tanping.peratech.framework.bean.goods.BrandBean;
 import com.pera.tanping.peratech.framework.bean.goods.GoodsBean;
+import com.pera.tanping.peratech.framework.event.UpdateGoodsPriceEvent;
 import com.pera.tanping.peratech.framework.module.discover.BannerBean;
 import com.pera.tanping.peratech.framework.remote.ApiManager;
 import com.pera.tanping.peratech.framework.remote.config.RequestParam;
@@ -52,12 +53,14 @@ import com.pera.tanping.peratech.framework.remote.model.LoginManager;
 import com.pera.tanping.peratech.framework.utils.DoubleFromat;
 import com.pera.tanping.peratech.framework.utils.ScreenUtil;
 import com.pera.tanping.peratech.framework.utils.StringUtil;
+import com.pera.tanping.peratech.framework.widget.AttrSelectView;
 import com.utils.ui.ToastUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -108,6 +111,9 @@ public class GoodsDetailFragment extends BaseFragment {
     TextView tvSave;
     @BindView(R.id.ll_buttom)
     LinearLayout llButtom;
+
+    @BindView(R.id.attr_ll)
+    LinearLayout attrLL;
 
     @BindView(R.id.goback)
     ImageView goBack;
@@ -235,7 +241,7 @@ public class GoodsDetailFragment extends BaseFragment {
 
     private void getBrandList(boolean showDialog){
         RequestParam param = new RequestParam();
-        param.put("productid",goodsId);
+        param.put("categoryid",goodsId);
         ApiManager.Api().getProductInfo(param.createRequestBody())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -264,11 +270,14 @@ public class GoodsDetailFragment extends BaseFragment {
 
     }
 
+
+    List<AttrSelectView> attrSelectViews = new ArrayList<>();
     private void updateView(List<GoodsBean> data) {
 
         goodsBean = data.get(0);
-        goodsTitle.setText(goodsBean.shortDesc);
-        goodsPrice.setText("￥" + DoubleFromat.fromat(goodsBean.salePrice,2, RoundingMode.FLOOR));
+        goodsTitle.setText(goodsBean.productName);
+//        goodsPrice.setText("￥" + DoubleFromat.fromat(goodsBean.salePrice,2, RoundingMode.FLOOR));
+        goodsPrice.setVisibility(View.GONE);
         goodsModel.setText(goodsBean.productName);
         goodsDesc.loadData(goodsBean.description,"text/html", "UTF -8");
 
@@ -282,15 +291,27 @@ public class GoodsDetailFragment extends BaseFragment {
         createBanner(arrayList);
 
 
+        List<GoodsBean.ProductattrlistBean> productattrlist =  goodsBean.productattrlist;
+        if (productattrlist !=null){
+            for (GoodsBean.ProductattrlistBean productattrlistBean : productattrlist){
+                AttrSelectView attrSelectView = new AttrSelectView(getContext());
+                attrSelectView.updateView(productattrlistBean);
+                attrLL.addView(attrSelectView);
+                attrSelectViews.add(attrSelectView);
+            }
+        }
+        //attr_ll
         updateTotal();
     }
 
     public void updateTotal(){
         if (goodsBean !=null){
-            double price = number * goodsBean.salePrice;
+         /*   double price = number * goodsBean.salePrice;
 
             String total =  DoubleFromat.fromat(price,2, RoundingMode.FLOOR);
-            tvTotal.setText("￥"+total);
+            tvTotal.setText("￥"+total);*/
+
+            updatePrice(null);
         }
     }
 
@@ -398,5 +419,24 @@ public class GoodsDetailFragment extends BaseFragment {
                 });
 
 
+    }
+
+
+    @Override
+    public boolean isRegisterEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void updatePrice(UpdateGoodsPriceEvent event){
+        double total= 0;
+        for (AttrSelectView attrSelectView :attrSelectViews){
+            GoodsBean.ProductattrlistBean.ListBean listBean =  attrSelectView.getSelected();
+            if (listBean !=null) {
+                total += listBean.AttrPrice;
+            }
+        }
+        String totalStr =  DoubleFromat.fromat(total,2, RoundingMode.FLOOR);
+        tvTotal.setText("￥"+totalStr);
     }
 }

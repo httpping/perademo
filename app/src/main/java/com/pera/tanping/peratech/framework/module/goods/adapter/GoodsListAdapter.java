@@ -31,8 +31,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.gb.bind.adapter.GBBaseBindAdapter;
 import com.gb.bind.annotations.BindItem;
 import com.pera.tanping.peratech.R;
+import com.pera.tanping.peratech.framework.bean.goods.CategoryBean;
 import com.pera.tanping.peratech.framework.bean.goods.GoodsBean;
-import com.pera.tanping.peratech.framework.bean.order.OrderBean;
 import com.pera.tanping.peratech.framework.module.goods.GoodsListFragment;
 import com.pera.tanping.peratech.framework.widget.RatioImageView;
 
@@ -40,13 +40,13 @@ import java.util.List;
 
 /**
  */
-public class GoodsListAdapter extends GBBaseBindAdapter<GoodsBean,BaseViewHolder> implements View.OnClickListener {
+public class GoodsListAdapter extends GBBaseBindAdapter<CategoryBean,BaseViewHolder> implements View.OnClickListener {
 
     private GoodsListFragment fragment;
     private Context mContext;
     private String curSelAddressId;
 
-    public GoodsListAdapter(GoodsListFragment fragment, List<GoodsBean> data) {
+    public GoodsListAdapter(GoodsListFragment fragment, List<CategoryBean> data) {
         super(data);
         this.fragment = fragment;
         this.mContext = this.fragment.getContext();
@@ -62,13 +62,17 @@ public class GoodsListAdapter extends GBBaseBindAdapter<GoodsBean,BaseViewHolder
      * @throws Exception
      */
     @BindItem(type = 0,layout = R.layout.item_goods_view)
-    public void one(BaseViewHolder helper, GoodsBean bean) throws Exception {
+    public void one(BaseViewHolder helper, CategoryBean bean) throws Exception {
 
         RatioImageView ratioImageView = helper.getView(R.id.imageView2);
-        ratioImageView.setUrl(bean.focusImgUrl);
+        ratioImageView.setUrl(bean.ico_url);
+        helper.setText(R.id.tv_title,bean.title);
+        helper.setText(R.id.tv_price,bean.remark);
+        helper.getView(R.id.textView5).setVisibility(View.GONE);
+        /*ratioImageView.setUrl(bean.focusImgUrl);
 
         helper.setText(R.id.tv_title,bean.productName);
-        helper.setText(R.id.tv_price,"￥"+bean.salePrice);
+        helper.setText(R.id.tv_price,"￥"+bean.salePrice);*/
     }
 
     public GoodsBean curDefaultAddress = null;

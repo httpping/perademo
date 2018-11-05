@@ -25,51 +25,36 @@ package com.pera.tanping.peratech.framework.bean.goods;
 */
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 /**
+ * 项目名称: z
  * 类描述：
- * 创建时间:2018/8/16 21:01
+ * 创建时间:2018/11/5 13:37
  *
  * @author tanping
  */
-public class GoodsBean implements MultiItemEntity{
+public class CategoryBean  implements MultiItemEntity {
 
 
     public int id;
-    public int categoryId;
-    public int brandid;
-    public String sku;
-    public String productName;
-    public String shortDesc;
-    public String description;
-    public String focusImgUrl;
-    public String thumbnailsUrll;
-    public String specialOffer;
-    public String costPrice;
-    public String marketPrice;
-    public double salePrice;
-    public String addDate;
-//    public String productattrlist;
-    public int PageCount;
-
-    @SerializedName("productattrlist")
-    public List<ProductattrlistBean> productattrlist;
+    public String title;
+    public String code;
+    public int parent_id;
+    public String class_list;
+    public int class_layer;
+    public int sort_id;
+    public String link_url;
+    public String img_url;
+    public String class_content;
+    public String remark;
+    public String seo_title;
+    public String seo_keywords;
+    public String seo_description;
+    public int wid;
+    public String ico_url;
 
     @Override
     public int getItemType() {
         return 0;
-    }
-
-    public static class ProductattrlistBean {
-        public String AttrName;
-        public List<ListBean> list;
-
-        public static class ListBean {
-            public String AttrValue;
-            public float AttrPrice;
-        }
     }
 }

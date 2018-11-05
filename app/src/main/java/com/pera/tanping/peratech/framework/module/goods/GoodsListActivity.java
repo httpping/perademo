@@ -141,6 +141,9 @@ public class GoodsListActivity extends BaseActivity implements BaseQuickAdapter.
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,goodsListFragment).commit();
 
 
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+
         getBrandList(false);
     }
 
@@ -198,6 +201,7 @@ public class GoodsListActivity extends BaseActivity implements BaseQuickAdapter.
 
     private void getBrandList(boolean showDialog){
         RequestParam param = new RequestParam();
+//        param.put("pid",categoryid);
         ApiManager.Api().getBrandList(param.createRequestBody())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

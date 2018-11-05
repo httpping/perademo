@@ -104,8 +104,8 @@ public interface Api {
      *  获取产品列表
      *  api/brand/getbrandlist
      */
-    @POST("api/product/getproductlist")
-    Flowable<String> getProductList(@Body RequestBody params);
+    @POST("api/categorytype/getcategorylist")
+    Flowable<String> getCategoryTypeList(@Body RequestBody params);
 
 
 

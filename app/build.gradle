@@ -131,5 +131,8 @@ dependencies {
 
     implementation 'com.youth.banner:banner:1.4.10'  //最新版本
 
+    implementation 'com.zhy:base-adapter:2.0.1'
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
+
 }
 

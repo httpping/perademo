@@ -5,6 +5,7 @@
         android:id="@+id/action_search"
         android:icon="@mipmap/icon_more"
         app:showAsAction="always"
+        android:visible="false"
         android:title="more" />
 
 </menu>

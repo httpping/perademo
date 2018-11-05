@@ -36,6 +36,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.pera.tanping.peratech.R;
 import com.pera.tanping.peratech.framework.base.BaseListFragment;
 import com.pera.tanping.peratech.framework.base.NetResult;
+import com.pera.tanping.peratech.framework.bean.goods.CategoryBean;
 import com.pera.tanping.peratech.framework.bean.goods.GoodsBean;
 import com.pera.tanping.peratech.framework.module.goods.adapter.BaseFragmentStatePagerAdapter;
 import com.pera.tanping.peratech.framework.module.goods.adapter.GoodsListAdapter;
@@ -59,7 +60,7 @@ public class GoodsListFragment extends BaseListFragment implements BaseFragmentS
     private String addressId;
     static final int REQUEST_CODE_TO_LOGIN = 212;
     private GoodsListAdapter adapter;
-    private List<GoodsBean> data;
+    private List<CategoryBean> data;
     public String title;
     //非必填，产品类目ID
     public String categoryid;
@@ -87,6 +88,7 @@ public class GoodsListFragment extends BaseListFragment implements BaseFragmentS
         mRecyclerView.setBackgroundColor(getContext().getResources().getColor(R.color.color_f7f7f7));
         mRecyclerView.setAdapter(adapter);
         adapter.setOnLoadMoreListener(this ,mRecyclerView);
+        adapter.setEnableLoadMore(false);
         adapter.setOnItemClickListener(this);
         mSwipeRefresh.setOnRefreshListener(this);
         getGoodsList(true);
@@ -95,16 +97,17 @@ public class GoodsListFragment extends BaseListFragment implements BaseFragmentS
 
     private void getGoodsList(boolean showDialog){
         RequestParam param = new RequestParam();
-        param.put("categoryid",categoryid);
-        param.put("catalogid",catalogid);
+//        param.put("categoryid",categoryid);
+//        param.put("catalogid",catalogid);
         param.put("pageindex", page);
         param.put("pagesize",pageSize);
-        ApiManager.Api().getProductList(param.createRequestBody())
+        param.put("pid",categoryid);
+        ApiManager.Api().getCategoryTypeList(param.createRequestBody())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new XGsonSubscriber<NetResult<List<GoodsBean>>>(getActivity(),showDialog) {
+                .subscribe(new XGsonSubscriber<NetResult<List<CategoryBean>>>(getActivity(),showDialog) {
                     @Override
-                    public void onSuccess(NetResult<List<GoodsBean>> listNetResult) {
+                    public void onSuccess(NetResult<List<CategoryBean>> listNetResult) {
                         if (page == 1){
                             data.clear();
                         }
@@ -139,7 +142,7 @@ public class GoodsListFragment extends BaseListFragment implements BaseFragmentS
     }
 
 
-    private void filterData(List<GoodsBean> goodsBeans){
+    private void filterData(List<CategoryBean> goodsBeans){
 
         if (page == 1){
             data.clear();
@@ -173,7 +176,7 @@ public class GoodsListFragment extends BaseListFragment implements BaseFragmentS
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
            try {
-                GoodsBean  goodsBean = this.adapter.getData().get(position);
+                CategoryBean  goodsBean = this.adapter.getData().get(position);
                Intent intent = new Intent(getContext(),GoodsDetaillActivity.class);
                intent.putExtra(GoodsDetaillActivity.PRODUCT_ID,goodsBean.id+"");
                startActivity(intent);

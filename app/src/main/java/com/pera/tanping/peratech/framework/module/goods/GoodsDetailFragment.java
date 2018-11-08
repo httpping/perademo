@@ -375,22 +375,30 @@ public class GoodsDetailFragment extends BaseFragment {
         try {
             String userId = LoginManager.getInstance().getUser().id;
             param.put("userid",userId);
-            double total = number * goodsBean.salePrice;
+//            double total = number * goodsBean.salePrice;
             param.put("order_amount",total+"");
 
             JSONArray jsonArray = new JSONArray();
             //{"ProductID":"21","Price":"160","Quantity":"1"}
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("ProductID",goodsBean.id);
+            jsonObject.put("categoryId",goodsBean.categoryId);
             jsonObject.put("Price",goodsBean.salePrice);
-            jsonObject.put("Quantity",number);
+            jsonObject.put("Quantity",1);
             jsonArray.put(jsonObject);
 
+            JSONArray attrs = new JSONArray();
+            for (GoodsBean.ProductattrlistBean.ListBean listbean : selectAttrs){
+                JSONObject attr = new JSONObject();
+                attr.put("AttrName",listbean.AttrValue);
+                attr.put("AttrValue",listbean.AttrPrice);
+                attrs.put(attr);
+            }
+            jsonObject.put("AttrList",attrs);
             JSONObject object = new JSONObject();
             object.put("productlist",jsonArray);
 
 //            param.setJsonParams(object.toString());
-
             param.put("productlist",jsonArray.toString());
         } catch (Exception e) {
             LoginManager.getInstance().toLogin(getActivity());
@@ -427,16 +435,33 @@ public class GoodsDetailFragment extends BaseFragment {
         return true;
     }
 
+
+    /**
+     * 选择属性
+     */
+    List<GoodsBean.ProductattrlistBean.ListBean> selectAttrs ;
+    double total= 0;
     @Subscribe
     public void updatePrice(UpdateGoodsPriceEvent event){
-        double total= 0;
+
+
+        if (selectAttrs == null){
+            selectAttrs = new ArrayList<>();
+        }else {
+            selectAttrs.clear();
+        }
+        total = 0 ;
         for (AttrSelectView attrSelectView :attrSelectViews){
             GoodsBean.ProductattrlistBean.ListBean listBean =  attrSelectView.getSelected();
             if (listBean !=null) {
                 total += listBean.AttrPrice;
             }
+            selectAttrs.add(listBean);
         }
         String totalStr =  DoubleFromat.fromat(total,2, RoundingMode.FLOOR);
         tvTotal.setText("￥"+totalStr);
     }
+
+
+
 }

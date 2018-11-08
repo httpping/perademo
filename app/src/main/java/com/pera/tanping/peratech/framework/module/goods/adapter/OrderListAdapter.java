@@ -35,6 +35,10 @@ import com.pera.tanping.peratech.framework.bean.order.OrderBean;
 import com.pera.tanping.peratech.framework.module.goods.OrderListFragment;
 import com.pera.tanping.peratech.framework.widget.RatioImageView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import static com.pera.tanping.peratech.framework.module.goods.adapter.OrderBeanEnitity.TYPE_FOOTER;
@@ -69,17 +73,35 @@ public class OrderListAdapter extends GBBaseBindAdapter<OrderBeanEnitity,BaseVie
         OrderBean orderBean = (OrderBean) bean.value;
 
         RatioImageView ratioImageView = helper.getView(R.id.imageView2);
-        ratioImageView.setUrl(orderBean.focusImgUrl);
+//        ratioImageView.setUrl(orderBean.focusImgUrl);
 
-        helper.setText(R.id.tv_title,orderBean.productName);
-        helper.setText(R.id.tv_price,"￥"+orderBean.salePrice);
+        try {
+            JSONArray jsonArray = new JSONArray(orderBean.message);
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            jsonArray = (JSONArray) jsonObject.get("AttrList");
+            String title = "";
+            for (int i=0;i<jsonArray.length();i++){
+                jsonObject = (JSONObject) jsonArray.get(i);
+                title += jsonObject.getString("AttrName");
+                title += "(" + jsonObject.getString("AttrValue") +")";
+            }
+            helper.setText(R.id.tv_title,title);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        helper.setText(R.id.textView5,"");
+        ratioImageView.setVisibility(View.GONE);
+        helper.setText(R.id.tv_price,"");
 
     }
 
     @BindItem(type = TYPE_HEADER,layout = R.layout.item_order_header)
     public void header(BaseViewHolder helper, OrderBeanEnitity bean) throws Exception {
         OrderBean orderBean = (OrderBean) bean.value;
-        helper.setText(R.id.tv_goods_number,"下单时间："+orderBean.addDate);
+        helper.setText(R.id.tv_goods_number,"下单时间："+orderBean.add_time);
+        helper.setText(R.id.tv_order_price,"订单号："+orderBean.order_no);
 
     }
 
@@ -87,7 +109,7 @@ public class OrderListAdapter extends GBBaseBindAdapter<OrderBeanEnitity,BaseVie
     public void footer(BaseViewHolder helper, OrderBeanEnitity bean) throws Exception {
         OrderBean orderBean = (OrderBean) bean.value;
 //        helper.setText(R.id.tv_goods_number,);
-        helper.setText(R.id.tv_order_price,"￥"+orderBean.salePrice);
+        helper.setText(R.id.tv_order_price,"￥"+orderBean.order_amount);
 
     }
 
